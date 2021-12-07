@@ -1,0 +1,202 @@
+---
+title: "Regressions for Project 6222"
+author: "Chedrick Ricks & Richard Moore"
+date: "November 25, 2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+install.packages("CARS")
+```
+
+
+
+```{r, include = FALSE}
+##importing libraries
+library(writexl)
+library(readxl)
+library(dbplyr)
+library(tidyverse)
+library(GGally)
+library(lmtest)
+library(stringr)
+library(imputeTS)
+library(MASS)
+library(ISLR)
+library(corrplot)
+library(rmarkdown)
+##library(shiny)
+##library(shinyBS)
+library(knitr)
+library(corrplot)
+library(seeds)
+library(random)
+library(CARS)
+library(car)
+library(ggplot2)
+install.packages("plotly")
+```
+
+
+
+## Data Analysis Regressions and AIC fit & Durbin-Watson Calculations
+
+```{r}
+##AMZN Earnings Per Share imorting Data
+forecast_regression<- read.csv("C:/Fall SMU Mod B/ITOM 6222 Business Forecast Engineering Models/Final Project Earnings Per Share (EPS) ITOM 6222  Fall2021 Moore & Ricks AMZN EPS.csv")
+```
+
+```{r}
+glimpse(forecast_regression)
+forecast_regression
+```
+
+```{r}
+##renaming the funky column part of cleansing the data,,: (EDA) 
+forecast_regressionv1<-rename(forecast_regression, 'Quarter(Q1-Q4)' = ï..date )
+```
+
+
+```{r echo=FALSE}
+#renaming column
+forecast_regressionv1<-rename(forecast_regressionv1,'Calculated_EPS'= Amazon.Statistics..2021....Business.of.Apps)
+```
+
+```{r}
+##plotting the data
+
+```
+
+```{r}
+##mean of sales distribution of sales
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+```{r}
+salesplot
+```
+
+
+```{r include=FALSE, fig.height=3, fig.pos="H"}
+
+
+```
+
+```{r}
+#Performiong Durbin-Watson Test
+durbinWatsonTest(Salesdata16222v2)
+```
+
+
+
+
+```{r}
+forecast_regressionv1<-rename(forecast_regressionv1,'Calculated_EPS'= Amazon.Statistics..2021....Business.of.Apps)
+
+```
+
+```{r}
+forecast_regressionv1
+```
+
+```{r}
+forecast_regression2 = lm(Calculated_EPS
+~ P.S.Ratio+ Price.Book.Ratio, forecast_regressionv1)
+```
+
+```{r}
+forecast_regression3 =lm(Calculated_EPS
+~ P.S.Ratio+ Price.Book.Ratio+Quarterly.Shares.Outstanding, forecast_regressionv1)
+```
+
+```{r}
+summary(forecast_regression2)
+```
+
+```{r}
+summary(forecast_regression3)
+```
+
+```{r}
+install.packages("AICcmodavg")
+library(AICcmodavg)
+```
+
+```{r}
+#calculating AIC of Models
+#define list of Models
+models<-list(forecast_regression2,forecast_regression3)
+
+#specifiy model names
+mod.names <-c('forcast1.P.S.Ratio.Price.Book.Ratio', 'forecast2.P.S.Ratio+ Price.Book.Ratio+Quarterly.Shares.Outstanding')
+
+# just looking at AIC of linear Models
+AIC(forecast_regression2)
+AIC(forecast_regression3)
+#calculate AIC of each model
+```
+
+```{r}
+#calculate AIC of each model
+aictab(cand.set = models, modnames = mod.names)
+```
+
+```{r}
+##K: The number of parameters in the model.
+##AICc: The AIC value of the model. The lowercase ‘c’ indicates that the AIC has been calculated from the AIC corrected for small sample sizes.
+##Delta_AICc: The difference between the AIC of the best model compared to the current model being compared.
+##AICcWt: The proportion of the total predictive power that can be found in the model.
+##Cum.Wt: The cumulative sum of the AIC weights.
+##LL: The log-likelihood of the model. This tells us how likely the model is, given the data we used.
+##The model with the lowest AIC value is always listed first. From the output we can see that the following model has the lowest AIC value and is ##thus the best fitting model:
+##
+##mpg = β0 + β1(disp) + β2(hp) + β3(wt) + β4(qsec)
+##
+##Once we’ve identified this model as the best, we can proceed to fit the model and analyze the results including the R-squared value and the beta ##coefficients to determine the exact relationship between the set of predictor variables and the response variable.
+```
+
+```{r}
+#importing Microsoft Data
+forecast_regression_MFST<- read.csv("C:/Fall SMU Mod B/ITOM 6222 Business Forecast Engineering Models/Final Project Earnings Per Share (EPS) ITOM 6222  Fall2021 Moore & Ricks Microsoft EPS.csv")
+```
+
+```{r}
+##renaming the funky column part of cleansing the data,,: (EDA) 
+head(forecast_regression_MFST)
+rename(forecast_regression_MFST, 'Date' = ï..date)
+```
+
+
+```{r}
+##importing google cloud data
+forecast_regression_Google_cloud<- read.csv("C:/Fall SMU Mod B/ITOM 6222 Business Forecast Engineering Models/Final Project Earnings Per Share (EPS) ITOM 6222  Fall2021 Moore & Ricks Google EPS.csv")
+```
+
+```{r}
+head(forecast_regression_Google_cloud)
+rename(forecast_regression_Google_cloud, 'Date' = ï..date)
+```
+
+
